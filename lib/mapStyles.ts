@@ -12,7 +12,7 @@ function categoricalFill(scores: Record<string, number>): ExpressionSpecificatio
     const color = palette[idx % palette.length];
     entries.push(iso, color);
   });
-  return ["match", ["get", "iso_a3"], ...entries, "#334155"];
+  return ["match", ["get", "iso_a3"], ...entries, "#334155"] as unknown as ExpressionSpecification;
 }
 
 function heatFill(scores: Record<string, number>): ExpressionSpecification {
