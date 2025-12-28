@@ -20,11 +20,20 @@ export function MapView({ scores }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [mode, setMode] = useState<MapMode>("palette");
   const [hoverInfo, setHoverInfo] = useState<{ iso: string; name: string; score?: number; x: number; y: number } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    const style = buildStyle(mode, scores);
+    let style;
+    try {
+      style = buildStyle(mode, scores);
+      setError(null);
+    } catch (err: any) {
+      setError(err?.message || "Map style failed");
+      return;
+    }
+
     const map = new maplibregl.Map({
       container: containerRef.current,
       style,
@@ -65,14 +74,24 @@ export function MapView({ scores }: MapViewProps) {
 
   useEffect(() => {
     if (!mapRef.current) return;
-    const style = buildStyle(mode, scores);
-    mapRef.current.setStyle(style);
+    try {
+      const style = buildStyle(mode, scores);
+      mapRef.current.setStyle(style);
+      setError(null);
+    } catch (err: any) {
+      setError(err?.message || "Map style failed");
+    }
   }, [mode, scores]);
 
   return (
     <div className="relative h-[80vh] w-full rounded-2xl overflow-hidden card">
       <LayerControls mode={mode} onChange={setMode} />
       <div ref={containerRef} className="h-full w-full" />
+      {error ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-950/80 text-sm text-rose-200">
+          Map konnte nicht geladen werden: {error}
+        </div>
+      ) : null}
       {hoverInfo ? <Tooltip info={hoverInfo} /> : null}
     </div>
   );
