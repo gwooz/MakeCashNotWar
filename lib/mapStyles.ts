@@ -2,8 +2,8 @@ import { ExpressionSpecification, StyleSpecification } from "maplibre-gl";
 import { palette } from "./palettes";
 
 // Use MapTiler countries polygons tileset (https://api.maptiler.com/tiles/countries/tiles.json)
-// Layer id is "country". Allow override via env if needed.
-const sourceLayer = process.env.NEXT_PUBLIC_MAPTILER_COUNTRY_LAYER || "country";
+// Default layer id is "countries"; override via NEXT_PUBLIC_MAPTILER_COUNTRY_LAYER if needed.
+const sourceLayer = process.env.NEXT_PUBLIC_MAPTILER_COUNTRY_LAYER || "countries";
 
 const mapTilerKey = process.env.NEXT_PUBLIC_MAPTILER_KEY || process.env.MAPTILER_KEY;
 
