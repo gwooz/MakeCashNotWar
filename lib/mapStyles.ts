@@ -1,9 +1,8 @@
 import { ExpressionSpecification, StyleSpecification } from "maplibre-gl";
 import { palette } from "./palettes";
 
-// For MapTiler OpenMapTiles v3 the country polygons live in layer "admin_0_countries".
-// Adjust if you use a different tileset.
-const sourceLayer = process.env.NEXT_PUBLIC_MAPTILER_COUNTRY_LAYER || "admin_0_countries";
+// Default layer for country polygons; override via NEXT_PUBLIC_MAPTILER_COUNTRY_LAYER if your tileset differs.
+const sourceLayer = process.env.NEXT_PUBLIC_MAPTILER_COUNTRY_LAYER || "country";
 
 const mapTilerKey = process.env.NEXT_PUBLIC_MAPTILER_KEY || process.env.MAPTILER_KEY;
 
@@ -52,7 +51,7 @@ export function buildStyle(mode: "palette" | "flag" | "heatmap", scores: Record<
         url: `https://api.maptiler.com/tiles/v3/tiles.json?key=${mapTilerKey}`
       }
     },
-    // Use a sprite that exists; streets-v2 is broadly available. Remove if not needed.
+    // Use a sprite that exists; streets-v2 is broadly available.
     sprite: `https://api.maptiler.com/maps/streets-v2/sprite@2x?key=${mapTilerKey}`,
     glyphs: `https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=${mapTilerKey}`,
     layers: [
